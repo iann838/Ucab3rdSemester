@@ -1,5 +1,5 @@
 # Ucab3rdSemester
-Cada una de los directorios corresponde a una evaluacion del semestre.
+Cada uno de los directorios corresponde a una evaluacion del semestre.
 
 ## Directories
 
