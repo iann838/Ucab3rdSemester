@@ -10,10 +10,12 @@ struct Data {
 };
 
 void crear (Data *&ptr) {
+    // Crea la estructura fuera del main() .... ... .. . . .
     ptr = new Data;
 }
 
 void contar (const string& chain, const char& character) {
+    // Cuenta la ocurrencia de character en chain
     int * count = new int (0);
     char * upper_character = new char (toupper(character));
     
