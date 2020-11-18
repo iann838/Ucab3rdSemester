@@ -8,3 +8,6 @@ número de ocurrencias del carácter i y del carácter a. No puede usar arreg
 
 - Taller2: Realice un programa que reciba una cadena de caracteres por teclado y cuente el
 número de ocurrencias del carácter que indique el usuario. No puede usar arreglos.
+
+- Taller3: Realice un programa que reciba una cadena de caracteres por teclado y cuente el
+número de ocurrencias del carácter que indique el usuario. No puede usar arreglos pero ***Se aplica recurvisidad.***
