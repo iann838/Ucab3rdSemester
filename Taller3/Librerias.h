@@ -15,6 +15,7 @@ void crear (Data *&ptr) {
 }
 
 int complicarLaVidaRecursivamente (const string& chain, const char& character, const char& upper, const int index, int count) {
+    // Si es fin, retorna, si no sigue
     if (index == chain.length()) {
         return count;
     }
@@ -26,24 +27,12 @@ int complicarLaVidaRecursivamente (const string& chain, const char& character, c
 
 void contar (const string& chain, const char& character) {
     // Cuenta la ocurrencia de character en chain
-    // int * count = new int (0);
-    // int count = 0;
-    char * upper_character = new char (toupper(character));
-    
-    // int * i = new int (0);
 
-    // for (; *i < chain.length(); (*i) ++){
-    //     if ((chain[*i] == character) || (chain[*i] == *upper_character)) {
-    //         (*count)++;
-    //     }
-    // }
-    // int i = 0;
+    char * upper_character = new char (toupper(character));
 
     int count = complicarLaVidaRecursivamente(chain, character, *upper_character, 0, 0);
 
-    // delete i;
-
     cout << "La cadena '" << chain << "' posee " << count << " letras '" << character << "'" << endl;
-    // delete count;
+
     delete upper_character;
 }
