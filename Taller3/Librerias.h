@@ -14,25 +14,27 @@ void crear (Data *&ptr) {
     ptr = new Data;
 }
 
-int complicarLaVidaRecursivamente (const string& chain, const char& character, const char& upper, const int index, int count) {
+int complicarLaVidaRecursivamente (const string& chain, const char& lower, const char& upper, const int index, int count) {
     // Si es fin, retorna, si no sigue
     if (index == chain.length()) {
         return count;
     }
-    if ((chain[index] == character) || (chain[index] == upper)) {
+    if ((chain[index] == lower) || (chain[index] == upper)) {
         (count)++;
     }
-    return complicarLaVidaRecursivamente(chain, character, upper, index + 1, count);
+    return complicarLaVidaRecursivamente(chain, lower, upper, index + 1, count);
 }
 
 void contar (const string& chain, const char& character) {
     // Cuenta la ocurrencia de character en chain
 
-    char * upper_character = new char (toupper(character));
+    char * upper = new char (toupper(character));
+    char * lower = new char (tolower(character));
 
-    int count = complicarLaVidaRecursivamente(chain, character, *upper_character, 0, 0);
+    int count = complicarLaVidaRecursivamente(chain, *lower, *upper, 0, 0);
 
     cout << "La cadena '" << chain << "' posee " << count << " letras '" << character << "'" << endl;
 
-    delete upper_character;
+    delete lower;
+    delete upper;
 }
