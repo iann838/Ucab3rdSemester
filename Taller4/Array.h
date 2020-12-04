@@ -4,7 +4,12 @@ void llenado(int array[],int longitud,int limite){
     }
 }
 int *arreglo(int longitud, int limite){
-    int array[longitud];
+    int *array = new int[longitud];
     llenado(array,longitud,limite);
-    return &(array[0]);
+    return array;
+}
+void printA(int array[],int longitud){
+	for(int i = 0;(i+1) < longitud;i++){
+        cout << array[i] << endl;
+    }
 }

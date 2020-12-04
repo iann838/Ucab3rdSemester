@@ -1,10 +1,10 @@
 #include <iostream>
-#include "Array.h"
 using namespace std;
+#include "Array.h"
 
 int main()
 {
-    int opcion, control = 0;
+    int opcion;
     int *array = NULL;
     do{
         cout << "\n\n\t\t\t...:MENU:..." << endl;
@@ -18,28 +18,21 @@ int main()
         cin >> opcion;
         switch(opcion){
             case 1: 
-					array = arreglo(100, 1000);
-                    /*int array[100];
-                    llenado(array,1000);
-                    control = 1;*/
-                break;
-                
+				array = arreglo(100, 1000);
+            break;
             case 2: 
-              		array = arreglo(10000, 1000000);
-                    /*int array[10000];
-                    llenado(array,1000000);
-                    control = 1;*/
-                break;
+              	array = arreglo(10000, 1000000);
+            break;
             case 3: 
-                    if(array != NULL){//if (control != 0){
-                        //pones tu logica Jian
-                    }else{
-                        cout << "\n\t\t\tAun no ha generado un array, porfavor genere uno"<< endl;
-                    }
-                break;
+                if(array != NULL){//if (control != 0){
+                	//pones tu logica Jian
+                }else{
+                    cout << "\n\t\t\tAun no ha generado un array, porfavor genere uno"<< endl;
+                }
+            break;
             case 4: opcion = 0;
-            			cout<<"\n\n\t\tHasta pronto...\n\n";
-                break;
+            	cout<<"\n\n\t\tHasta pronto...\n\n";
+            break;
             default :cout << "\n\t\t\tLa opcion introducida no es valida"<< endl;
         }
     }while(opcion != 0);
