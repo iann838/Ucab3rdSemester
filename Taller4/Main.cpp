@@ -17,7 +17,7 @@ int main()
         cout << "1. Generar y llenar aleatoriamente un array de 100 elementos con enteros del rango [1, 1000]." << endl;
         cout << "2. Generar y llenar aleatoriamente un array de 10000 elementos con enteros del rango [1, 1000000]." << endl;
         cout << "3. Ordenar el array generado aplicando BubbleSort con las estadisticas de tiempo, comparasiones e intercambios." << endl;
-        cout << "4. Imprimir el array generado u ordenado en caso de ser aplicado el #3." << endl;
+        cout << "4. Imprimir el array generado u ordenado en caso de ser aplicado el ordenamiento." << endl;
         cout << "5. Salir del programa." << endl;
         cout << "\n> Introduzca una opcion por favor: ";
         cin >> option;
