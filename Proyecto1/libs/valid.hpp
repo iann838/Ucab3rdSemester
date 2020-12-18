@@ -6,6 +6,11 @@
 
 namespace valid {
 
+    void eq (const long& value, const long& compare) {
+        if (value == compare) return;
+        throw exceptions::ValidationError("El dato introducido no es mayor a lo pedido");
+    }
+
     void gt (const long& value, const long& compare) {
         if (value > compare) return;
         throw exceptions::ValidationError("El dato introducido no es mayor a lo pedido");
@@ -64,6 +69,12 @@ namespace valid {
         const std::regex pattern("(\\w+)(\\.|_)?(\\w*)@(\\w+)(\\.(\\w+))+"); 
         bool valid = std::regex_match(value, pattern);
         if (!valid) throw exceptions::ValidationError("El dato introducido no es un correo valido");
+    }
+
+    void vlong (const std::string& value) {
+        const std::regex pattern("^[0-9]+(,[0-9]+)*$"); 
+        bool valid = std::regex_match(value, pattern);
+        if (!valid) throw exceptions::ValidationError("El dato introducido no es una lista de enteros");
     }
 
 }

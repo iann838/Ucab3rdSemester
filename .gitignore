@@ -36,5 +36,10 @@
 
 # local
 .tests
-db/
+*/db/*
+!*/db/users
+*/db/users/*
+!*/db/users/0.json
+!*/db/users/index.json
+
 test.*
