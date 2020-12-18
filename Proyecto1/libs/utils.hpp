@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <string>
 #include <chrono>
@@ -16,7 +17,7 @@ namespace utils {
 
     long stol (std::string str) {
         if (is_num(str)) return std::stol(str);
-        throw exceptions::ValueError();
+        throw exceptions::ValueError("El valor introducido no es un numero entero.");
     }
 
     std::chrono::_V2::steady_clock::time_point date_now() {

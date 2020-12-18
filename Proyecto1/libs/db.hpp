@@ -122,7 +122,7 @@ namespace db {
         return objects;
     }
 
-    std::vector<json> filter (const std::string& collection, const std::string& key, std::string& value) {
+    std::vector<json> filter (const std::string& collection, const std::string& key, const std::string& value) {
         auto all(collection);
         std::vector<json> objects = {};
 
@@ -133,7 +133,7 @@ namespace db {
         return objects;
     }
 
-    std::vector<json> filter (const std::string& collection, const std::string& key, long& value) {
+    std::vector<json> filter (const std::string& collection, const std::string& key, const long& value) {
         auto all(collection);
         std::vector<json> objects = {};
 

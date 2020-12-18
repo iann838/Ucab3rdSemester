@@ -1,7 +1,10 @@
+#pragma once
 #include <exception>
 
 
 namespace exceptions {
+
+    struct SigExit : public std::exception {};
 
     class ValidationError : public std::exception {
         public:
