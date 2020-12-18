@@ -1,3 +1,4 @@
+#include <vector>
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -5,6 +6,7 @@
 #include <algorithm>
 #include "json.hpp"
 #include "filesys.hpp"
+#include "exceptions.hpp"
 
 
 using json = nlohmann::json;
@@ -55,7 +57,7 @@ namespace db {
             std::ifstream i(path(collection, id));
             i >> j;
         } else {
-            j = "null"_json;
+            throw exceptions::DoesNotExist();
         }
         return j; 
     }
@@ -104,6 +106,42 @@ namespace db {
         } else {
             return false;
         }
+    }
+
+    std::vector<json> all (const std::string& collection) {
+        json index = ls(collection);
+        std::vector<json> objects = {};
+
+        for (auto it = index.begin(); it != index.end(); ++it) {
+            json j;
+            std::ifstream i(path(collection, *it));
+            i >> j;
+            objects.push_back(j);
+        }
+
+        return objects;
+    }
+
+    std::vector<json> filter (const std::string& collection, const std::string& key, std::string& value) {
+        auto all(collection);
+        std::vector<json> objects = {};
+
+        for (auto it: objects) {
+            if (it[key] == value) objects.push_back(it);
+        }
+
+        return objects;
+    }
+
+    std::vector<json> filter (const std::string& collection, const std::string& key, long& value) {
+        auto all(collection);
+        std::vector<json> objects = {};
+
+        for (auto it: objects) {
+            if (it[key] == value) objects.push_back(it);
+        }
+
+        return objects;
     }
 
 }
