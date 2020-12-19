@@ -1,4 +1,5 @@
 #include <iostream>
+#include <exception>
 #include "../libs/exceptions.hpp"
 #include "../libs/console.hpp"
 #include "../libs/json.hpp"
@@ -69,11 +70,26 @@ namespace app {
             case 1:
                 views::create_question();
                 break;
+            case 2:
+                views::modify_question();
+                break;
+            case 3:
+                views::delete_question();
+                break;
+            case 4:
+                views::create_quizz();
+                break;
+            case 5:
+                views::modify_quizz();
+                break;
+            case 6:
+                views::delete_quizz();
+                break;
             case 10:
                 views::create_user();
                 break;
             case 11:
-                session = views::modify_profile(session["id"], session["group"]);
+                session = views::modify_user(session["id"], session["group"]);
                 break;
             case 12:
                 std::cout << "> Session cerrada.";
@@ -109,7 +125,7 @@ namespace app {
             case 0:
                 throw exceptions::SigExit();
             case 6:
-                session = views::modify_profile(session["id"], session["group"]);
+                session = views::modify_user(session["id"], session["group"]);
                 break;
             case 7:
                 std::cout << "> Session cerrada.";
@@ -130,9 +146,13 @@ namespace app {
                     std::cout << "(@" << session["id"].get<long>() << ")";
                 }
                 std::cout << " ---    " << std::endl;
-                if (session.empty()) auth_loop();
-                else if (session["group"] == "T") teacher_loop();
-                else student_loop();
+                try {
+                    if (session.empty()) auth_loop();
+                    else if (session["group"] == "T") teacher_loop();
+                    else student_loop();
+                } catch (std::exception& e) {
+                    std::cout << "> " << e.what();
+                }
                 std::cout << std::endl << std::endl << "Presione enter para continuar... ";
                 std::cin.get();
             }

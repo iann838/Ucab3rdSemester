@@ -26,10 +26,10 @@ namespace views {
         }
     }
 
-    json modify_profile (const long& id, const std::string& group) {
+    json modify_user (const long& id, const std::string& group) {
         json j = users::cin(id, group);
         users::put(id, j);
-        std::cout << "> Perfil modificado.";
+        std::cout << "> Usuario id: " << j["id"] << " modificado.";
         return j;
     }
 
@@ -46,6 +46,66 @@ namespace views {
         std::cout << "> Pregunta id: " << id << " creado.";
     }
 
-    
+    void modify_question () {
+        long id = console::inputl("Pregunta (ingrese id): ");
+        std::vector<json> objs = quizzes::filter("questions", id);
+        if (objs.size() > 0) {
+            std::cout << "> Pregunta id: " << id << " ya ha sido registrada en unos de los examenes.";
+            return;
+        }
+        json j = questions::cin();
+        long id = questions::put(id, j);
+        std::cout << "> Pregunta id: " << id << " modificado.";
+    }
+
+    void delete_question () {
+        long id = console::inputl("Pregunta (ingrese id): ");
+        std::vector<json> objs = quizzes::filter("questions", id);
+        if (objs.size() > 0) {
+            std::cout << "> Pregunta id: " << id << " ya ha sido registrada en unos de los examenes.";
+            return;
+        }
+        try {
+            questions::del(id);
+        } catch (exceptions::DoesNotExist& e) {
+            std::cout << "> " << e.what();
+            return;
+        }
+        std::cout << "> Pregunta id: " << id << " eliminado.";
+    }
+
+    void create_quizz () {
+        json j = quizzes::cin();
+        long id = quizzes::create(j);
+        std::cout << "> Examen id: " << id << " creado.";
+    }
+
+    void modify_quizz () {
+        long id = console::inputl("Examen (ingrese id): ");
+        std::vector<json> objs = records::filter("quizz", id);
+        if (objs.size() > 0) {
+            std::cout << "> Examen id: " << id << " ya ha sido respondido por unos de los estudiantes.";
+            return;
+        }
+        json j = quizzes::cin();
+        long id = quizzes::put(id, j);
+        std::cout << "> Pregunta id: " << id << " modificado.";
+    }
+
+    void delete_quizz () {
+        long id = console::inputl("Examen (ingrese id): ");
+        std::vector<json> objs = records::filter("quizz", id);
+        if (objs.size() > 0) {
+            std::cout << "> Examen id: " << id << " ya ha sido respondido por unos de los estudiantes.";
+            return;
+        }
+        try {
+            quizzes::del(id);
+        } catch (exceptions::DoesNotExist& e) {
+            std::cout << "> " << e.what();
+            return;
+        }
+        std::cout << "> Examen id: " << id << " eliminado.";
+    }
 
 }

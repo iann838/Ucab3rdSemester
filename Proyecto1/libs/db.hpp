@@ -104,7 +104,7 @@ namespace db {
             ls(collection, index);
             return true;
         } else {
-            return false;
+            throw exceptions::DoesNotExist();
         }
     }
 
@@ -127,7 +127,15 @@ namespace db {
         std::vector<json> objects = {};
 
         for (auto it: objects) {
-            if (it[key] == value) objects.push_back(it);
+            auto compare = it[key];
+            if (compare.type() == json::value_t::array) {
+                for (auto innerit: compare) {
+                    if (innerit == value) objects.push_back(it);
+                    break;
+                }
+            } else {
+                if (compare == value) objects.push_back(it);
+            }
         }
 
         return objects;
@@ -138,7 +146,15 @@ namespace db {
         std::vector<json> objects = {};
 
         for (auto it: objects) {
-            if (it[key] == value) objects.push_back(it);
+            auto compare = it[key];
+            if (compare.type() == json::value_t::array) {
+                for (auto innerit: compare) {
+                    if (innerit == value) objects.push_back(it);
+                    break;
+                }
+            } else {
+                if (compare == value) objects.push_back(it);
+            }
         }
 
         return objects;
