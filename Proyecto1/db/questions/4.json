@@ -1,0 +1,17 @@
+{
+    "answerAmount": 6,
+    "answers": [
+        "32756",
+        "4294967295",
+        "1000000",
+        "999999999",
+        "2147483647",
+        "21474832647"
+    ],
+    "correctAnswers": [
+        5
+    ],
+    "id": 4,
+    "statement": "Maximo entero posible en c++",
+    "type": "SM"
+}

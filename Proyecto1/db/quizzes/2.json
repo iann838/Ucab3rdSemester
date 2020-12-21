@@ -1,0 +1,11 @@
+{
+    "id": 2,
+    "pointsPerQuestion": 6.666666666666667,
+    "questionAmount": 3,
+    "questions": [
+        1,
+        3,
+        2
+    ],
+    "title": "Examen MAGIS 1"
+}

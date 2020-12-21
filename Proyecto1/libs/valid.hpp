@@ -53,6 +53,12 @@ namespace valid {
         throw exceptions::ValidationError("El dato introducido no es una de las opciones");
     }
 
+    void notin (const std::string& value, const std::vector<std::string>& v) {
+        for (auto it = v.begin(); it != v.end(); ++it) {
+            if (*it == value) throw exceptions::ValidationError("El dato introducido es unas de las restricciones");
+        }
+    }
+
     void isin (const long& value, const std::vector<long>& v) {
         for (auto it = v.begin(); it != v.end(); ++it) {
             if (*it == value) return;

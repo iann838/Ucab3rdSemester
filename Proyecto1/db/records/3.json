@@ -1,0 +1,21 @@
+{
+    "answers": [
+        [
+            1,
+            2
+        ],
+        [
+            1
+        ],
+        [
+            2
+        ]
+    ],
+    "calification": 11.111111111111,
+    "duration": 20.05817,
+    "endTime": "Sun Dec 20 19:06:01 202",
+    "id": 3,
+    "quizz": 2,
+    "startTime": "Sun Dec 20 19:05:41 202",
+    "user": 27890123
+}

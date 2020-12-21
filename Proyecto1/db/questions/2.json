@@ -1,0 +1,13 @@
+{
+    "answerAmount": 2,
+    "answers": [
+        "Verdadero",
+        "Falso"
+    ],
+    "correctAnswers": [
+        1
+    ],
+    "id": 2,
+    "statement": "La ucab da informatica con lenguajes mentalmente retrasado en semestres de inicio",
+    "type": "VF"
+}

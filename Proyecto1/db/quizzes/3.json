@@ -1,0 +1,12 @@
+{
+    "id": 3,
+    "pointsPerQuestion": 5.0,
+    "questionAmount": 4,
+    "questions": [
+        1,
+        2,
+        3,
+        4
+    ],
+    "title": "Examen Sin Sentido"
+}

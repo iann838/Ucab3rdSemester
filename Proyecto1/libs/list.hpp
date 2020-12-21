@@ -1,6 +1,7 @@
 
 /* THIS IS HARDLY DEPRECATED BETTER APPROACH EXISTS*/
 
+#pragma once
 #include <iostream>
 #include <vector>
 #include <memory>

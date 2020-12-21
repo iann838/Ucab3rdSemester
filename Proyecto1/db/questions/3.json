@@ -1,0 +1,13 @@
+{
+    "answerAmount": 2,
+    "answers": [
+        "Verdadero",
+        "Falso"
+    ],
+    "correctAnswers": [
+        1
+    ],
+    "id": 3,
+    "statement": "La mayoria de los profesores de la ucab odian python",
+    "type": "VF"
+}

@@ -1,0 +1,10 @@
+{
+    "id": 1,
+    "pointsPerQuestion": 10.0,
+    "questionAmount": 2,
+    "questions": [
+        1,
+        2
+    ],
+    "title": "Examen Cualquiera 1"
+}

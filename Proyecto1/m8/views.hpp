@@ -38,24 +38,54 @@ namespace views {
     json modify_user (const long& id, const std::string& group) {
         json j = users::cin(id, group);
         users::put(id, j);
+        std::cout << std::endl;
         std::cout << "> Usuario id: " << j["id"] << " modificado." << std::endl;
+        users::cout(j);
         return j;
     }
 
-    long create_user () {
+    void create_user () {
         json j = users::cin();
+        try {
+            users::get(j["id"].get<long>());
+            std::cout << "> Un usuario con el mismo id ya esta registrado." << std::endl;
+            return;
+        } catch (exceptions::DoesNotExist) {}
         users::create(j);
+        std::cout << std::endl;
         std::cout << "> Usuario id: " << j["id"] << " creado." << std::endl;
-        return j["id"];
+        users::cout(j);
+    }
+
+    void read_user () {
+        users::ls();
+        std::cout << std::endl;
+        long id = console::inputl("Usuario (ingrese id): ");
+        std::cout << std::endl;
+        json u = users::get(id);
+        users::cout(u);
     }
 
     void create_question () {
         json j = questions::cin();
         long id = questions::create(j);
+        std::cout << std::endl;
         std::cout << "> Pregunta id: " << id << " creado." << std::endl;
+        questions::cout(j, 0, true);
+    }
+
+    void read_question () {
+        questions::ls();
+        std::cout << std::endl;
+        long id = console::inputl("Pregunta (ingrese id): ");
+        std::cout << std::endl;
+        json u = questions::get(id);
+        questions::cout(u, 0, true);
     }
 
     void modify_question () {
+        questions::ls();
+        std::cout << std::endl;
         long id = console::inputl("Pregunta (ingrese id): ");
         std::vector<json> objs = quizzes::filter("questions", id);
         if (objs.size() > 0) {
@@ -64,32 +94,53 @@ namespace views {
         }
         json j = questions::cin();
         questions::put(id, j);
+        std::cout << std::endl;
         std::cout << "> Pregunta id: " << id << " modificado." << std::endl;
+        questions::cout(j, 0, true);
     }
 
     void delete_question () {
+        questions::ls();
+        std::cout << std::endl;
         long id = console::inputl("Pregunta (ingrese id): ");
         std::vector<json> objs = quizzes::filter("questions", id);
         if (objs.size() > 0) {
             std::cout << "> Pregunta id: " << id << " ya ha sido registrada en unos de los examenes." << std::endl;
             return;
         }
+        json j;
         try {
+            j = questions::get(id);
             questions::del(id);
         } catch (exceptions::DoesNotExist& e) {
             std::cout << "> " << e.what() << std::endl;
             return;
         }
+        std::cout << std::endl;
         std::cout << "> Pregunta id: " << id << " eliminado." << std::endl;
+        questions::cout(j, 0, true);
     }
 
     void create_quizz () {
         json j = quizzes::cin();
         long id = quizzes::create(j);
+        std::cout << std::endl;
         std::cout << "> Examen id: " << id << " creado." << std::endl;
+        quizzes::cout(j, 0, true);
+    }
+
+    void read_quizz () {
+        quizzes::ls();
+        std::cout << std::endl;
+        long id = console::inputl("Examen (ingrese id): ");
+        std::cout << std::endl;
+        json u = quizzes::get(id);
+        quizzes::cout(u, 0, true);
     }
 
     void modify_quizz () {
+        quizzes::ls();
+        std::cout << std::endl;
         long id = console::inputl("Examen (ingrese id): ");
         std::vector<json> objs = records::filter("quizz", id);
         if (objs.size() > 0) {
@@ -98,36 +149,46 @@ namespace views {
         }
         json j = quizzes::cin();
         quizzes::put(id, j);
+        std::cout << std::endl;
         std::cout << "> Pregunta id: " << id << " modificado." << std::endl;
+        quizzes::cout(j, 0, true);
     }
 
     void delete_quizz () {
+        quizzes::ls();
+        std::cout << std::endl;
         long id = console::inputl("Examen (ingrese id): ");
         std::vector<json> objs = records::filter("quizz", id);
         if (objs.size() > 0) {
             std::cout << "> Examen id: " << id << " ya ha sido respondido por unos de los estudiantes." << std::endl;
             return;
         }
+        json j;
         try {
+            j = quizzes::get(id);
             quizzes::del(id);
         } catch (exceptions::DoesNotExist& e) {
             std::cout << "> " << e.what() << std::endl;
             return;
         }
+        std::cout << std::endl;
         std::cout << "> Examen id: " << id << " eliminado." << std::endl;
+        quizzes::cout(j, 0, true);
     }
 
     void do_quizz (json& user) {
-        auto allq = quizzes::all();
-        auto quizzes = std::make_unique<struct list::List>();
-        quizzes->loadvj(allq);
-        std::cout << "  id       titulo" << std::endl << std::endl;
-        for (auto it = quizzes->first; it != NULL; it=it->next) {
-            std::cout << "  " << it->dict["id"] << "   " << it->dict["title"].get<std::string>() << std::endl;
-        }
+        quizzes::ls();
         std::cout << std::endl;
         long id = console::inputl("Examen (ingrese id): ");
         std::cout << std::endl;
+
+        auto presented = records::filter("user", user["id"].get<long>());
+        for (auto it: presented) {
+            if (it["quizz"] == id) {
+                std::cout << "> Ya ha presentado ese examen." << std::endl;
+                return;
+            }
+        }
         
         auto quizz = quizzes::get(id);
         datetime::datetime start = datetime::now();
@@ -182,7 +243,6 @@ namespace views {
             ans.push_back(answers);
         }
         datetime::datetime end = datetime::now();
-        std::cout << std::endl << "Nota obtenida: " << points << std::endl;
         json j;
         j["quizz"] = quizz["id"];
         j["user"] = user["id"];
@@ -193,13 +253,15 @@ namespace views {
         j["calification"] = points;
         j["answers"] = ans;
         records::create(j);
+        std::cout << std::endl;
+        records::cout(j);
     }
 
     void all_quizzes_average () {
         auto allq = quizzes::all();
         auto quizzes = std::make_unique<struct list::List>();
         quizzes->loadvj(allq);
-        std::cout << "  id  nota(p)  duracion(p)       titulo" << std::endl << std::endl;
+        std::cout << "  id  nota(p)  duracion(p)       examen" << std::endl << std::endl;
         for (auto it = quizzes->first; it != NULL; it=it->next) {
             long id = it->dict["id"];
             auto allr = records::filter("quizz", id);
@@ -211,6 +273,8 @@ namespace views {
     }
 
     void list_approve_by_quizz () {
+        quizzes::ls();
+        std::cout << std::endl;
         long id = console::inputl("Examen (ingrese id): ");
         std::cout << std::endl;
         quizzes::get(id);
@@ -223,7 +287,7 @@ namespace views {
         std::sort(allr.begin(), allr.end(), [&](json &j1, json &j2)-> bool { return j1["calification"] > j2["calification"]; });
         auto records = std::make_unique<struct list::List>();
         records->loadvj(allr);
-        std::cout << "  apro.   nota     usuario" << std::endl << std::endl;
+        std::cout << "  apro.   nota        usuario" << std::endl << std::endl;
         for (auto it = records->first; it != NULL; it=it->next) {
             long uid = it->dict["user"];
             json user = users::get(uid);
@@ -236,7 +300,9 @@ namespace views {
     }
 
     void calification_by_user () {
-        long id = console::inputl("Usuario (ingrese ci): ");
+        users::ls();
+        std::cout << std::endl;
+        long id = console::inputl("Usuario (ingrese id): ");
         std::cout << std::endl;
         users::get(id);
 

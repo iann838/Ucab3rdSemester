@@ -43,17 +43,20 @@ namespace app {
 
         void teacher () {
             std::cout << "1. Crear pregunta." << std::endl;
-            std::cout << "2. Modificar pregunta." << std::endl;
-            std::cout << "3. Eliminar pregunta." << std::endl;
-            std::cout << "4. Crear examen." << std::endl;
-            std::cout << "5. Modificar examen." << std::endl;
-            std::cout << "6. Eliminar examen." << std::endl;
-            std::cout << "7. Mostrar promedio de nota de todos los examenes." << std::endl;
-            std::cout << "8. Mostrar lista de aprovados y no aprovados de un examen." << std::endl;
-            std::cout << "9. Mostrar las notas obtenidas de un estudiante." << std::endl;
-            std::cout << "10. Crear un nuevo usuario." << std::endl;
-            std::cout << "11. Modificar perfil y clave." << std::endl;
-            std::cout << "12. Cerrar sesion." << std::endl;
+            std::cout << "2. Ver pregunta." << std::endl;
+            std::cout << "3. Modificar pregunta." << std::endl;
+            std::cout << "4. Eliminar pregunta." << std::endl;
+            std::cout << "5. Crear examen." << std::endl;
+            std::cout << "6. Ver examen." << std::endl;
+            std::cout << "7. Modificar examen." << std::endl;
+            std::cout << "8. Eliminar examen." << std::endl;
+            std::cout << "9. Mostrar promedio de nota de todos los examenes." << std::endl;
+            std::cout << "10. Mostrar lista de aprovados y no aprovados de un examen." << std::endl;
+            std::cout << "11. Mostrar las notas obtenidas de un estudiante." << std::endl;
+            std::cout << "12. Crear usuario." << std::endl;
+            std::cout << "13. Ver usuario." << std::endl;
+            std::cout << "14. Modificar perfil y clave." << std::endl;
+            std::cout << "15. Cerrar sesion." << std::endl;
             std::cout << "0. Salir del programa." << std::endl;
 
             long option;
@@ -73,36 +76,45 @@ namespace app {
                     views::create_question();
                     break;
                 case 2:
-                    views::modify_question();
+                    views::read_question();
                     break;
                 case 3:
-                    views::delete_question();
+                    views::modify_question();
                     break;
                 case 4:
-                    views::create_quizz();
+                    views::delete_question();
                     break;
                 case 5:
-                    views::modify_quizz();
+                    views::create_quizz();
                     break;
                 case 6:
-                    views::delete_quizz();
+                    views::read_quizz();
                     break;
                 case 7:
-                    views::all_quizzes_average();
+                    views::modify_quizz();
                     break;
                 case 8:
-                    views::list_approve_by_quizz();
+                    views::delete_quizz();
                     break;
                 case 9:
-                    views::calification_by_user();
+                    views::all_quizzes_average();
                     break;
                 case 10:
-                    views::create_user();
+                    views::list_approve_by_quizz();
                     break;
                 case 11:
-                    session = views::modify_user(session["id"], session["group"]);
+                    views::calification_by_user();
                     break;
                 case 12:
+                    views::create_user();
+                    break;
+                case 13:
+                    views::read_user();
+                    break;
+                case 14:
+                    session = views::modify_user(session["id"], session["group"]);
+                    break;
+                case 15:
                     std::cout << "> Session cerrada." << std::endl;
                     session = "null"_json;
                     break;

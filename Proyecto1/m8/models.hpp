@@ -5,6 +5,7 @@
 #include "../libs/console.hpp"
 #include "../libs/datetime.hpp"
 #include "../libs/valid.hpp"
+#include "../libs/list.hpp"
 #include "../libs/json.hpp"
 #include "../libs/db.hpp"
 
@@ -49,7 +50,7 @@ namespace users {
         valid::maxlen(j["lastnames"], 60);
         valid::email(j["email"]);
         valid::isin(j["group"].get<std::string>(), group_choices);
-        valid::minlen(j["password"], 8);
+        valid::minlen(j["password"], 6);
         valid::maxlen(j["password"], 30);
 
         return j;
@@ -90,7 +91,7 @@ namespace users {
                 j["group"] = group;
                 valid::isin(j["group"].get<std::string>(), group_choices);
                 j["password"] = console::inputs("Clave de ingreso: ");
-                valid::minlen(j["password"], 8);
+                valid::minlen(j["password"], 6);
                 valid::maxlen(j["password"], 30);
             } catch (exceptions::ValueError& e) {
                 std::cout << "> " << e.what() << std::endl;
@@ -121,6 +122,17 @@ namespace users {
         }
         if (j["password"] != pw) return "null"_json;
         return j;
+    }
+
+    void ls () {
+        auto alls = all();
+        auto objs = std::make_unique<struct list::List>();
+        objs->loadvj(alls);
+        std::cout << "  id        usuario" << std::endl << std::endl;
+        for (auto it = objs->first; it != NULL; it=it->next) {
+            std::cout << "  " << it->dict["id"] << "    " << it->dict["names"].get<std::string>() <<
+            " " << it->dict["lastnames"].get<std::string>() << std::endl;
+        }
     }
 
 }
@@ -238,6 +250,16 @@ namespace questions {
         std::cout << std::endl;
     }
 
+    void ls () {
+        auto alls = all();
+        auto objs = std::make_unique<struct list::List>();
+        objs->loadvj(alls);
+        std::cout << "  id         enunciado" << std::endl << std::endl;
+        for (auto it = objs->first; it != NULL; it=it->next) {
+            std::cout << "  " << it->dict["id"] << "    " << it->dict["statement"].get<std::string>().substr(0, 30) << std::endl;
+        }
+    }
+
 }
 
 
@@ -337,6 +359,16 @@ namespace quizzes {
                 json q = questions::get(it);
                 questions::cout(q, indent+2);
             }
+    }
+
+    void ls () {
+        auto alls = all();
+        auto objs = std::make_unique<struct list::List>();
+        objs->loadvj(alls);
+        std::cout << "  id        titulo" << std::endl << std::endl;
+        for (auto it = objs->first; it != NULL; it=it->next) {
+            std::cout << "  " << it->dict["id"] << "    " << it->dict["title"].get<std::string>() << std::endl;
+        }
     }
 
 }
