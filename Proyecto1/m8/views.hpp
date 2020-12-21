@@ -140,7 +140,7 @@ namespace views {
         int i = 0;
         for (auto lit = questions->first; lit != NULL; lit=lit->next) {
             std::cout << std::endl;
-            std::cout << "  (" << ++i << ") ";
+            std::cout << "(" << ++i << ")";
             auto question = questions::get(lit->value);
             questions::cout(question, 2);
             std::vector<long> answers = {};
@@ -233,6 +233,128 @@ namespace views {
             std::cout << "    "  << std::to_string(it->dict["calification"].get<double>()).substr(0, 5) <<
             "   " << user["names"].get<std::string>() << " " << user["lastnames"].get<std::string>() << std::endl;
         }
+    }
+
+    void calification_by_user () {
+        long id = console::inputl("Usuario (ingrese ci): ");
+        std::cout << std::endl;
+        users::get(id);
+
+        auto allr = records::filter("user", id);
+        if (allr.size() == 0) {
+            std::cout << "> Este usuario aun no ha presentado examenes." << std::endl;
+            return;
+        }
+        auto records = std::make_unique<struct list::List>();
+        records->loadvj(allr);
+        std::cout << "   nota           examen" << std::endl << std::endl;
+        for (auto it = records->first; it != NULL; it=it->next) {
+            long qid = it->dict["quizz"];
+            json quizz = quizzes::get(qid);
+            std::cout << "  " << std::to_string(it->dict["calification"].get<double>()).substr(0, 5) <<
+            "   (" << quizz["id"] << ")  " << quizz["title"].get<std::string>() << std::endl;
+        }
+    }
+
+    void calification_by_quizz (json& user) {
+        auto allr = records::filter("user", user["id"].get<long>());
+        if (allr.size() == 0) {
+            std::cout << "> Aun no has presentado ningun examen." << std::endl;
+            return;
+        }
+        auto records = std::make_unique<struct list::List>();
+        records->loadvj(allr);
+        std::cout << "  id        examen" << std::endl << std::endl;
+        for (auto it = records->first; it != NULL; it=it->next) {
+            long qid = it->dict["quizz"];
+            json quizz = quizzes::get(qid);
+            std::cout << "  " << it->dict["id"] << "    " << quizz["title"].get<std::string>() << std::endl;
+        }
+        std::cout << std::endl;
+
+        long id = console::inputl("Record (ingrese id): ");
+        std::cout << std::endl;
+        json rec = records::get(id);
+        records::cout(rec);
+    }
+
+    void all_calification (json& user) {
+        long id = user["id"];
+        auto allr = records::filter("user", id);
+        if (allr.size() == 0) {
+            std::cout << "> Aun no has presentado ningun examen." << std::endl;
+            return;
+        }
+        auto records = std::make_unique<struct list::List>();
+        records->loadvj(allr);
+        std::cout << "   nota           examen" << std::endl << std::endl;
+        for (auto it = records->first; it != NULL; it=it->next) {
+            long qid = it->dict["quizz"];
+            json quizz = quizzes::get(qid);
+            std::cout << "  " << std::to_string(it->dict["calification"].get<double>()).substr(0, 5) <<
+            "   (" << quizz["id"] << ")  " << quizz["title"].get<std::string>() << std::endl;
+        }
+    }
+
+    void average_calification (json& user) {
+        long id = user["id"];
+        auto allr = records::filter("user", id);
+        if (allr.size() == 0) {
+            std::cout << "> Aun no has presentado ningun examen." << std::endl;
+            return;
+        }
+        double mean = utils::mean(allr, "calification");
+        std::cout << "Promedio de nota: " << mean << std::endl;
+    }
+
+    void compare_answers_quizz (json& user) {
+        auto allr = records::filter("user", user["id"].get<long>());
+        if (allr.size() == 0) {
+            std::cout << "> Aun no has presentado ningun examen." << std::endl;
+            return;
+        }
+        auto records = std::make_unique<struct list::List>();
+        records->loadvj(allr);
+        std::cout << "  id        examen" << std::endl << std::endl;
+        for (auto it = records->first; it != NULL; it=it->next) {
+            long qid = it->dict["quizz"];
+            json quizz = quizzes::get(qid);
+            std::cout << "  " << it->dict["id"] << "    " << quizz["title"].get<std::string>() << std::endl;
+        }
+        std::cout << std::endl;
+
+        long id = console::inputl("Record (ingrese id): ");
+        std::cout << std::endl;
+        json rec = records::get(id);
+
+        json quizz = quizzes::get(rec["quizz"].get<long>());
+        auto questions = std::make_unique<struct list::List>();
+        questions->loadvl(quizz["questions"]);
+        quizzes::cout(quizz);
+        int ind = 0;
+        for (auto it = questions->first; it != NULL; it = it->next) {
+            std::cout << std::endl;
+            std::cout << "(" << ++ind << ")";
+            auto question = questions::get(it->value);
+            questions::cout(question, 2, true);
+            std::cout << console::spaces(2) << "Tus respuestas: ";
+            double ppa = quizz["pointsPerQuestion"].get<double>() / question["correctAnswers"].size();
+            double qpoints = 0;
+            std::vector<long> urans = rec["answers"][ind-1];
+            for (auto it2: urans) {
+                std::cout << "(" << it2 << ") ";
+                try {
+                    valid::isin(it2, question["correctAnswers"]);
+                    qpoints += ppa;
+                } catch (exceptions::ValidationError) {
+                    if (qpoints > 0) qpoints -= ppa;
+                }
+            }
+            std::cout << std::endl;
+            std::cout << console::spaces(2) << "Puntos: " << qpoints << " / " << quizz["pointsPerQuestion"] << std::endl;
+            std::cout << std::endl;
+        }
+        records::cout(rec);
     }
 
 }

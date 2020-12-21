@@ -44,8 +44,8 @@ namespace app {
         std::cout << "2. Modificar pregunta." << std::endl;
         std::cout << "3. Eliminar pregunta." << std::endl;
         std::cout << "4. Crear examen." << std::endl;
-        std::cout << "5. Modificar Examen." << std::endl;
-        std::cout << "6. Eliminar Examen." << std::endl;
+        std::cout << "5. Modificar examen." << std::endl;
+        std::cout << "6. Eliminar examen." << std::endl;
         std::cout << "7. Mostrar promedio de nota de todos los examenes." << std::endl;
         std::cout << "8. Mostrar lista de aprovados y no aprovados de un examen." << std::endl;
         std::cout << "9. Mostrar las notas obtenidas de un estudiante." << std::endl;
@@ -91,6 +91,9 @@ namespace app {
             case 8:
                 views::list_approve_by_quizz();
                 break;
+            case 9:
+                views::calification_by_user();
+                break;
             case 10:
                 views::create_user();
                 break;
@@ -132,6 +135,18 @@ namespace app {
                 throw exceptions::SigExit();
             case 1:
                 views::do_quizz(session);
+                break;
+            case 2:
+                views::calification_by_quizz(session);
+                break;
+            case 3:
+                views::all_calification(session);
+                break;
+            case 4:
+                views::average_calification(session);
+                break;
+            case 5:
+                views::compare_answers_quizz(session);
                 break;
             case 6:
                 session = views::modify_user(session["id"], session["group"]);

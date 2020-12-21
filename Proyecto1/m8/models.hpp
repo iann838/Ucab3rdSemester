@@ -3,6 +3,7 @@
 #include "../libs/exceptions.hpp"
 #include "../libs/constants.hpp"
 #include "../libs/console.hpp"
+#include "../libs/datetime.hpp"
 #include "../libs/valid.hpp"
 #include "../libs/json.hpp"
 #include "../libs/db.hpp"
@@ -224,7 +225,7 @@ namespace questions {
     }
 
     void cout (json& j, const int& indent = 0, const bool& cout_correct_answers = false) {
-        std::cout << console::spaces(indent) << "Enunciado: " << j["statement"].get<std::string>() << std::endl;
+        std::cout << console::spaces(indent/2) << "Enunciado: " << j["statement"].get<std::string>() << std::endl;
         std::cout << console::spaces(indent) << "Tipo: " << j["type"].get<std::string>() << std::endl;
         std::cout << console::spaces(indent) << "Respuestas: " << std::endl;
         int i = 0;
@@ -233,7 +234,8 @@ namespace questions {
         if (!cout_correct_answers) return;
         std::cout << console::spaces(indent) << "Respuestas correctas: ";
         for (auto it: j["correctAnswers"])
-            std::cout << console::spaces(indent) << it << " " << std::endl;
+            std::cout << "(" << it << ") ";
+        std::cout << std::endl;
     }
 
 }
@@ -385,6 +387,14 @@ namespace records {
 
     bool del (const long& id) {
         return db::del("records", id);
+    }
+
+    void cout (json& j) {
+        std::cout << "Hora inicio: " << j["startTime"].get<std::string>() << std::endl;
+        std::cout << "Hora fin: " << j["endTime"].get<std::string>() << std::endl;
+        datetime::timedelta dur = datetime::timedelta(j["duration"].get<double>());
+        std::cout << "Duracion: " << datetime::str(dur) << std::endl;
+        std::cout << "Nota obtenida: " << j["calification"] << std::endl;
     }
 
 }
