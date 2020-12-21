@@ -21,7 +21,7 @@ namespace app {
         try {
             option = console::inputl("\nIntroduzca una opcion por favor: ");
         } catch (exceptions::ValueError& e) {
-            std::cout << "> " << e.what();
+            std::cout << "> " << e.what() << std::endl;
             return;
         }
 
@@ -34,7 +34,7 @@ namespace app {
                 session = views::log_in();
                 break;
             default:
-                std::cout << "\n> La opcion introducida no es valida" << std::endl;
+                std::cout << "> La opcion introducida no es valida" << std::endl;
                 break;
         }
     }
@@ -58,7 +58,7 @@ namespace app {
         try {
             option = console::inputl("\nIntroduzca una opcion por favor: ");
         } catch (exceptions::ValueError& e) {
-            std::cout << "> " << e.what();
+            std::cout << "> " << e.what() << std::endl;
             return;
         }
 
@@ -85,6 +85,12 @@ namespace app {
             case 6:
                 views::delete_quizz();
                 break;
+            case 7:
+                views::all_quizzes_average();
+                break;
+            case 8:
+                views::list_approve_by_quizz();
+                break;
             case 10:
                 views::create_user();
                 break;
@@ -92,11 +98,11 @@ namespace app {
                 session = views::modify_user(session["id"], session["group"]);
                 break;
             case 12:
-                std::cout << "> Session cerrada.";
+                std::cout << "> Session cerrada." << std::endl;
                 session = "null"_json;
                 break;
             default:
-                std::cout << "\n> La opcion introducida no es valida." << std::endl;
+                std::cout << "> La opcion introducida no es valida." << std::endl;
                 break;
         }
     }
@@ -115,7 +121,7 @@ namespace app {
         try {
             option = console::inputl("\nIntroduzca una opcion por favor: ");
         } catch (exceptions::ValueError& e) {
-            std::cout << "> " << e.what();
+            std::cout << "> " << e.what() << std::endl;
             return;
         }
 
@@ -124,15 +130,18 @@ namespace app {
         switch (option) {
             case 0:
                 throw exceptions::SigExit();
+            case 1:
+                views::do_quizz(session);
+                break;
             case 6:
                 session = views::modify_user(session["id"], session["group"]);
                 break;
             case 7:
-                std::cout << "> Session cerrada.";
+                std::cout << "> Session cerrada." << std::endl;
                 session = "null"_json;
                 break;
             default:
-                std::cout << "\n> La opcion introducida no es valida." << std::endl;
+                std::cout << "> La opcion introducida no es valida." << std::endl;
                 break;
         }
     }
@@ -141,19 +150,21 @@ namespace app {
         try {
             while (true) {
                 console::clear();
-                std::cout << "    ---  Modulo 8 ";
+                std::cout << "  ---  Modulo 8 ";
                 if (!session.empty()) {
                     std::cout << "(@" << session["id"].get<long>() << ")";
                 }
-                std::cout << " ---    " << std::endl;
+                std::cout << " ---  " << std::endl;
                 try {
                     if (session.empty()) auth_loop();
                     else if (session["group"] == "T") teacher_loop();
                     else student_loop();
+                } catch (exceptions::SigExit& e) {
+                    throw e;
                 } catch (std::exception& e) {
-                    std::cout << "> " << e.what();
+                    std::cout << "> " << e.what() << std::endl;
                 }
-                std::cout << std::endl << std::endl << "Presione enter para continuar... ";
+                std::cout << std::endl << "Presione enter para continuar... ";
                 std::cin.get();
             }
         } catch (exceptions::SigExit) {

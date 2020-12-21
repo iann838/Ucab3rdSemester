@@ -81,7 +81,7 @@ namespace db {
         long id;
 
         if (index.size() == 0) {
-            id = 0;
+            id = 1;
         } else {
             id = index.back();
             ++id;
@@ -108,7 +108,7 @@ namespace db {
         }
     }
 
-    std::vector<json> all (const std::string& collection) {
+    std::vector<json> all (const std::string& collection, const bool& reverse = false) {
         json index = ls(collection);
         std::vector<json> objects = {};
 
@@ -119,44 +119,51 @@ namespace db {
             objects.push_back(j);
         }
 
+        if (reverse) std::reverse(objects.begin(), objects.end());
         return objects;
     }
 
-    std::vector<json> filter (const std::string& collection, const std::string& key, const std::string& value) {
-        auto all(collection);
+    std::vector<json> filter (const std::string& collection, const std::string& key, const std::string& value, const bool& reverse = false) {
+        auto allobjs = all(collection);
         std::vector<json> objects = {};
 
-        for (auto it: objects) {
+        for (auto it: allobjs) {
             auto compare = it[key];
-            if (compare.type() == json::value_t::array) {
-                for (auto innerit: compare) {
-                    if (innerit == value) objects.push_back(it);
-                    break;
-                }
-            } else {
+            if (compare.is_string()) {
                 if (compare == value) objects.push_back(it);
+            } else {
+                for (auto innerit: compare) {
+                    if (innerit == value) {
+                        objects.push_back(it);
+                        break;
+                    }
+                }
             }
         }
 
+        if (reverse) std::reverse(objects.begin(), objects.end());
         return objects;
     }
 
-    std::vector<json> filter (const std::string& collection, const std::string& key, const long& value) {
-        auto all(collection);
+    std::vector<json> filter (const std::string& collection, const std::string& key, const long& value, const bool& reverse = false) {
+        auto allobjs = all(collection);
         std::vector<json> objects = {};
 
-        for (auto it: objects) {
+        for (auto it: allobjs) {
             auto compare = it[key];
-            if (compare.type() == json::value_t::array) {
-                for (auto innerit: compare) {
-                    if (innerit == value) objects.push_back(it);
-                    break;
-                }
-            } else {
+            if (compare.is_number()) {
                 if (compare == value) objects.push_back(it);
+            } else {
+                for (auto innerit: compare) {
+                    if (innerit == value) {
+                        objects.push_back(it);
+                        break;
+                    }
+                }
             }
         }
 
+        if (reverse) std::reverse(objects.begin(), objects.end());
         return objects;
     }
 

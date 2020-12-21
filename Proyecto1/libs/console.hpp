@@ -17,6 +17,14 @@ namespace console {
         return utils::stol(inputs(premise));
     }
 
+    std::string spaces (const int& indent) {
+        std::string sp;
+        for (int i = 0; i < indent; ++i) {
+            sp += " ";
+        }
+        return sp;
+    }
+
     void clear() {
         #ifdef _WIN32
             std::system("cls");

@@ -2,11 +2,14 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-#include <chrono>
 #include <cctype>
 #include <vector>
 #include <algorithm>
 #include "exceptions.hpp"
+#include "json.hpp"
+
+
+using json = nlohmann::json;
 
 
 namespace utils {
@@ -35,8 +38,22 @@ namespace utils {
         return vect;
     }
 
-    std::chrono::_V2::steady_clock::time_point date_now() {
-        return std::chrono::steady_clock::now();
+    double mean (std::vector<double> v) {
+        double m = 0;
+        long count = v.size();
+        for (auto it: v) {
+            m += it;
+        }
+        return m / count;
+    }
+
+    double mean (std::vector<json> v, const std::string& key) {
+        double m = 0;
+        long count = v.size();
+        for (auto it: v) {
+            m += it[key].get<double>();
+        }
+        return m / count;
     }
 
 }

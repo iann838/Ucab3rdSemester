@@ -24,16 +24,16 @@ namespace users {
 
     const std::vector<std::string> group_choices = {"T", "S"};
 
-    std::vector<json> all () {
-        return db::all("users");
+    std::vector<json> all (const bool& reverse = false) {
+        return db::all("users", reverse);
     }
 
-    std::vector<json> filter (const std::string& key, const std::string& value) {
-        return db::filter("users", key, value);
+    std::vector<json> filter (const std::string& key, const std::string& value, const bool& reverse = false) {
+        return db::filter("users", key, value, reverse);
     }
 
-    std::vector<json> filter (const std::string& key, const long& value) {
-        return db::filter("users", key, value);
+    std::vector<json> filter (const std::string& key, const long& value, const bool& reverse = false) {
+        return db::filter("users", key, value, reverse);
     }
 
     json get (const long& id) {
@@ -103,6 +103,13 @@ namespace users {
         return j;
     }
 
+    void cout (json& j) {
+        std::cout << "Cedula identidad: " << j["id"] << std::endl;
+        std::cout << "Nombres: " << j["names"] << std::endl;
+        std::cout << "Apellidos: " << j["lastnames"] << std::endl;
+        std::cout << "Correo electronico: " << j["email"] << std::endl;
+        std::cout << "Grupo: " << j["group"] << std::endl;
+    }
     
     json authenticate (const long& id, const std::string& pw) {
         json j;
@@ -131,16 +138,16 @@ namespace questions {
 
     const std::vector<std::string> type_choices = {"VF", "SM"};
 
-    std::vector<json> all () {
-        return db::all("questions");
+    std::vector<json> all (const bool& reverse = false) {
+        return db::all("questions", reverse);
     }
 
-    std::vector<json> filter (const std::string& key, const std::string& value) {
-        return db::filter("questions", key, value);
+    std::vector<json> filter (const std::string& key, const std::string& value, const bool& reverse = false) {
+        return db::filter("questions", key, value, reverse);
     }
 
-    std::vector<json> filter (const std::string& key, const long& value) {
-        return db::filter("questions", key, value);
+    std::vector<json> filter (const std::string& key, const long& value, const bool& reverse = false) {
+        return db::filter("questions", key, value, reverse);
     }
 
     json get (const long& id) {
@@ -196,10 +203,10 @@ namespace questions {
                     for (int i = 1; i <= j["answerAmount"]; ++i) {
                         j["answers"].push_back(console::inputs("Respuesta " + std::to_string(i) + ": "));
                     }
-                    j["correctAnswers"] = console::inputs("Respuesta correctas (numeros separados de comas sin espacios): ");
+                    j["correctAnswers"] = console::inputs("Respuestas correctas (separados de ','): ");
                     valid::vlong(j["correctAnswers"]);
                     j["correctAnswers"] = utils::stovl(j["correctAnswers"]);
-                    valid::btwe(j["correctAnswers"].size(), 2, j["answerAmount"]);
+                    valid::btwe(j["correctAnswers"].size(), 1, j["answerAmount"]);
                     for (auto it: j["correctAnswers"]) {
                         valid::btwe(it, 1, j["answerAmount"]);
                     }
@@ -216,6 +223,19 @@ namespace questions {
         return j;
     }
 
+    void cout (json& j, const int& indent = 0, const bool& cout_correct_answers = false) {
+        std::cout << console::spaces(indent) << "Enunciado: " << j["statement"].get<std::string>() << std::endl;
+        std::cout << console::spaces(indent) << "Tipo: " << j["type"].get<std::string>() << std::endl;
+        std::cout << console::spaces(indent) << "Respuestas: " << std::endl;
+        int i = 0;
+        for (auto it: j["answers"])
+            std::cout << console::spaces(indent) << "  (" << ++i << ") " << it.get<std::string>() << std::endl;
+        if (!cout_correct_answers) return;
+        std::cout << console::spaces(indent) << "Respuestas correctas: ";
+        for (auto it: j["correctAnswers"])
+            std::cout << console::spaces(indent) << it << " " << std::endl;
+    }
+
 }
 
 
@@ -229,16 +249,16 @@ namespace quizzes {
     "pointsPerQuestion": long
     */
 
-    std::vector<json> all () {
-        return db::all("quizzes");
+    std::vector<json> all (const bool& reverse = false) {
+        return db::all("quizzes", reverse);
     }
 
-    std::vector<json> filter (const std::string& key, const std::string& value) {
-        return db::filter("quizzes", key, value);
+    std::vector<json> filter (const std::string& key, const std::string& value, const bool& reverse = false) {
+        return db::filter("quizzes", key, value, reverse);
     }
 
-    std::vector<json> filter (const std::string& key, const long& value) {
-        return db::filter("quizzes", key, value);
+    std::vector<json> filter (const std::string& key, const long& value, const bool& reverse = false) {
+        return db::filter("quizzes", key, value, reverse);
     }
 
     json get (const long& id) {
@@ -246,10 +266,10 @@ namespace quizzes {
     }
 
     json clean (const json& j) {
-        valid::minlen(j["title"], 10);
+        valid::minlen(j["title"], 6);
         valid::btwe(j["questionAmount"], 1, 90);
         valid::btwe(j["questions"].size(), 1, j["questionAmount"]);
-        for (auto it: j["question"]) {
+        for (auto it: j["questions"]) {
             questions::get(it);
         }
         valid::eq(j["pointsPerQuestion"], 20.0 / j["questionAmount"].get<int>());
@@ -275,8 +295,8 @@ namespace quizzes {
         
         while (j.empty()) {
             try {
-                j["title"] = console::inputs("Enunciado: ");
-                valid::minlen(j["title"], 10);
+                j["title"] = console::inputs("Titulo: ");
+                valid::minlen(j["title"], 6);
                 j["questionAmount"] = console::inputl("Cantidad de preguntas (min. 1): ");
                 valid::btwe(j["questionAmount"], 1, 90);
                 j["questions"] = json::array();
@@ -301,6 +321,22 @@ namespace quizzes {
         return j;
     }
 
+    void cout (json& j, const int& indent = 0, const bool& cout_questions = false, const bool& cout_question_details = false ) {
+        std::cout << console::spaces(indent) << "Titulo: " << j["title"].get<std::string>() << std::endl;
+        std::cout << console::spaces(indent) << "Ptos/Pregunta: " << j["pointsPerQuestion"] << std::endl;
+        if (!cout_questions) return;
+        int i = 0;
+        std::cout << console::spaces(indent) << "Preguntas: " << std::endl;
+        for (auto it: j["questions"])
+            if (!cout_question_details)
+                std::cout << console::spaces(indent) << "  (" << ++i << ") " << "Pregunta id: " << it << std::endl;
+            else {
+                std::cout << console::spaces(indent) << "  (" << ++i << ") " << std::endl;
+                json q = questions::get(it);
+                questions::cout(q, indent+2);
+            }
+    }
+
 }
 
 
@@ -310,24 +346,23 @@ namespace records {
     "id": long
     "quizz": long
     "user": long
-    "presentationDate": std::string
-    "startTime": long
-    "endTime": long
-    "calification": long
-    "duration": long
+    "startTime": std::string
+    "endTime": std::string
+    "calification": double
+    "duration": std::string
     "answers": std::vector<std::vector<long>>
     */
 
-    std::vector<json> all () {
-        return db::all("records");
+    std::vector<json> all (const bool& reverse = false) {
+        return db::all("records", reverse);
     }
 
-    std::vector<json> filter (const std::string& key, const std::string& value) {
-        return db::filter("records", key, value);
+    std::vector<json> filter (const std::string& key, const std::string& value, const bool& reverse = false) {
+        return db::filter("records", key, value, reverse);
     }
 
-    std::vector<json> filter (const std::string& key, const long& value) {
-        return db::filter("records", key, value);
+    std::vector<json> filter (const std::string& key, const long& value, const bool& reverse = false) {
+        return db::filter("records", key, value, reverse);
     }
 
     json get (const long& id) {
