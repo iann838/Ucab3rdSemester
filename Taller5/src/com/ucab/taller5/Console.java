@@ -4,16 +4,12 @@ import java.io.IOException;
 
 public class Console {
 
-    public static void clear() {
+    public static void clear(){
         try {
-            final String operatingSystem = System.getProperty("os.name");
-    
-            if (operatingSystem .contains("Windows")) {
-                Runtime.getRuntime().exec("cls");
-            }
-            else {
-                Runtime.getRuntime().exec("clear");
-            }
-        } catch (IOException e) {};
+            if (System.getProperty("os.name").contains("Windows"))
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            else
+                Runtime.getRuntime().exec("clear");    
+        } catch (IOException | InterruptedException ex) {}
     }
 }

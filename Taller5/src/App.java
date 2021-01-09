@@ -6,17 +6,18 @@ public class App {
         Chain chain = new Chain("");
         while (true) {
             Console.clear();
-            System.out.println("1. Ingresar cadena de caracteres");
-            System.out.println("2. Contar I y A que contiene la cadena");
-            System.out.println("3. Salir");
+            System.out.println("***              MENU              ***");
+            System.out.println("  1. Ingresar cadena de caracteres");
+            System.out.println("  2. Contar I y A que contiene la cadena");
+            System.out.println("  3. Salir");
             System.out.println();
             
-            String op = System.console().readLine("Opcion: ");
+            String op = System.console().readLine("$ Opcion: ");
             System.out.println();
             boolean sigExit = false;
             switch (op) {
                 case "1":
-                    chain = new Chain(System.console().readLine("Cadena: "));
+                    chain = new Chain(System.console().readLine("$ Cadena: "));
                     System.out.println(chain.value);
                     break;
                 case "2":
@@ -24,18 +25,22 @@ public class App {
                         System.out.println("> Cadena indefinida");
                         break;
                     }
-                    System.out.println("Cadena: " + chain.value);
+                    System.out.println("> Cadena: " + chain.value);
                     int Is = chain.countChar('i');
                     int As = chain.countChar('a');
-                    System.out.println("Letras 'i': " + Is);
-                    System.out.println("Letras 'a': " + As);
+                    System.out.println("> Letras 'i': " + Is);
+                    System.out.println("> Letras 'a': " + As);
                     break;
                 case "3":
                     System.out.println("> Bye");
                     sigExit = true;
+                    break;
+                default:
+                    System.out.println("> Opcion invalida");
             }
-            System.out.println();
             if (sigExit) break;
+            System.out.println();
+            System.console().readLine("Presione Enter para continuar ...");
         }
     }
 }
