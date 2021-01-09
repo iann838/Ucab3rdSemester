@@ -1,0 +1,16 @@
+{
+    "answerAmount": 4,
+    "answers": [
+        "memoria principal",
+        "memoria secundaria",
+        "memoria monton",
+        "memoria pila"
+    ],
+    "correctAnswers": [
+        2,
+        3
+    ],
+    "id": 7,
+    "statement": "Lo que ocupa un nodo se guarda en",
+    "type": "SM"
+}

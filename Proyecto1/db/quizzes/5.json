@@ -1,0 +1,11 @@
+{
+    "id": 5,
+    "pointsPerQuestion": 6.666666666666667,
+    "questionAmount": 3,
+    "questions": [
+        5,
+        7,
+        3
+    ],
+    "title": "Examen parcial 2"
+}

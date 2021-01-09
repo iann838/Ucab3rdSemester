@@ -1,0 +1,22 @@
+{
+    "answers": [
+        [
+            1,
+            2,
+            5
+        ],
+        [
+            1
+        ],
+        [
+            1
+        ]
+    ],
+    "calification": 20.0,
+    "duration": 662.8219113,
+    "endTime": "Mon Jan 04 11:13:17 202",
+    "id": 5,
+    "quizz": 4,
+    "startTime": "Mon Jan 04 11:02:14 202",
+    "user": 28143461
+}

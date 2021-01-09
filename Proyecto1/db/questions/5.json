@@ -1,0 +1,13 @@
+{
+    "answerAmount": 2,
+    "answers": [
+        "Verdadero",
+        "Falso"
+    ],
+    "correctAnswers": [
+        1
+    ],
+    "id": 5,
+    "statement": "La ucab esta ubicada en montalban",
+    "type": "VF"
+}
