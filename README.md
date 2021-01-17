@@ -17,4 +17,4 @@ número de ocurrencias del carácter que indique el usuario. No puede usar arr
 - Taller4: Realice un programa que reciba una cadena de caracteres por teclado y cuente el
 número de ocurrencias del carácter i y del carácter a. No puede usar arreglos.
 
-- Taller6: 5. Dada una lista A (desordenada y con elementos repetidos) se quiere que usted resuelva de manera eficiente el siguiente requerimiento: Obtener una lista B que contenga los elementos que están en A sin repeticiones, seguidos por el número de ocurrencias. Resuelva el problema utilizando manejo de apuntadores. La lista A puede ser modificada.
+- Taller6: Dada una lista A (desordenada y con elementos repetidos) se quiere que usted resuelva de manera eficiente el siguiente requerimiento: Obtener una lista B que contenga los elementos que están en A sin repeticiones, seguidos por el número de ocurrencias. Resuelva el problema utilizando manejo de apuntadores. La lista A puede ser modificada.
